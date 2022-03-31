@@ -9,5 +9,6 @@ UCIS_ENABLE = yes
 # RGB_MATRIX_CUSTOM_USER = yes
 
 SRC += rgb_matrix_user.c
+SRC += process_record_user.c
 SRC += led_user.c
 SRC += ucis_user.c
