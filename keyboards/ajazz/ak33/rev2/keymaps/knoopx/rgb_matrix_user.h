@@ -1,9 +1,17 @@
 #define LED_FLAG_CUSTOM 0x10
 
-#define LEDMAP_RGB_COLOR(layer, index) pgm_read_byte(&ledmaps[layer][index][0]), pgm_read_byte(&ledmaps[layer][index][1]), pgm_read_byte(&ledmaps[layer][index][2])
-#define LEDMAP_RGB_COLOR_IS_TRANS(layer, index) (uint8_t[]){ LEDMAP_RGB_COLOR(layer, index) } == (uint8_t[]){ RGB_OFF }
-#define LEDMAP_RGB_COLOR_IS_CUSTOM(layer, index) !(LEDMAP_RGB_COLOR_IS_TRANS(layer, index))
+typedef uint8_t rgb_matrix_led_map_t[DRIVER_LED_TOTAL]
+#ifdef DYNAMIC_KEYMAP_ENABLE
+                                    [DYNAMIC_KEYMAP_LAYER_COUNT];
+#else
+                                    [5];
+#endif
 
-typedef uint8_t ledmap[DRIVER_LED_TOTAL][DYNAMIC_KEYMAP_LAYER_COUNT];
+extern const rgb_matrix_led_map_t rgb_matrix_led_map[];
 
-extern const ledmap ledmaps[];
+#define RGB_LED_MAP_COLOR(layer, index)                                        \
+  {                                                                            \
+    pgm_read_byte(&rgb_matrix_led_map[layer][index][0]),                       \
+        pgm_read_byte(&rgb_matrix_led_map[layer][index][1]),                   \
+        pgm_read_byte(&rgb_matrix_led_map[layer][index][2])                    \
+  }
